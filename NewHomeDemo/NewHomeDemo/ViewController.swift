@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     private func setupNewView() {
         let newHomeView = ZPNewHomeView()
         newHomeView.frame.origin.y = 64
-        newHomeView.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height - 64)
+        newHomeView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 64)
         view.addSubview(newHomeView)
         //设置属性
         newHomeView.ZP_Titles = ["头条", "热点", "政治", "经济", "文化", "军事", "国际", "国内"]

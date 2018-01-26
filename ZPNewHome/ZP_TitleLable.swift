@@ -21,15 +21,15 @@ class ZP_TitleLable: UILabel {
     
     var scale: CGFloat = 0 {
         didSet {
-            transform = CGAffineTransformMakeScale(1 + labaleZoomMultiple * scale, 1 + labaleZoomMultiple * scale)
+            transform = CGAffineTransform(scaleX: 1 + labaleZoomMultiple * scale, y: 1 + labaleZoomMultiple * scale)
             textColor = UIColor(red: startColor!.R + (endColor!.R - startColor!.R) * scale, green: startColor!.G + (endColor!.G - startColor!.G) * scale, blue: startColor!.B + (endColor!.B - startColor!.B) * scale, alpha: 1.0)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        textAlignment = .Center
-        userInteractionEnabled = true
+        textAlignment = .center
+        isUserInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {

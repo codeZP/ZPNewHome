@@ -15,7 +15,7 @@ class ZPContentScrollView: UIScrollView {
         
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
-        backgroundColor = UIColor.lightGrayColor()
+        backgroundColor = UIColor.lightGray
     }
     
     required init?(coder aDecoder: NSCoder) {

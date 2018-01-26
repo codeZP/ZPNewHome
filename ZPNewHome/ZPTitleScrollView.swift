@@ -12,14 +12,14 @@ import UIKit
 
 class ZPTitleScrollView: UIScrollView {
     
-    private let ZPScreenWidth = UIScreen.mainScreen().bounds.width
-    private let ZPScreenHeight = UIScreen.mainScreen().bounds.height
+    private let ZPScreenWidth = UIScreen.main.bounds.width
+    private let ZPScreenHeight = UIScreen.main.bounds.height
     private let TagStart = 100
     
     var lableSmallRGB: (R: CGFloat, G: CGFloat, B: CGFloat) = (0, 0, 0)
     var lableBigRGC: (R: CGFloat, G: CGFloat, B: CGFloat) = (1, 1, 0)
     
-    var titleCilckIndex: ((index: Int) -> Void)?
+    var titleCilckIndex: ((_ index: Int) -> Void)?
     
     /// 标题的数组(这个必须传)
     var ZP_Titles: [String]? {
@@ -36,7 +36,7 @@ class ZPTitleScrollView: UIScrollView {
                 lable.frame = CGRect(x: CGFloat(i) * self.ZP_TitleLableWidth, y: 0, width: self.ZP_TitleLableWidth, height: frame.size.height)
             }
             let lastLable = viewWithTag(100 + subviews.count - 1)
-            contentSize = CGSize(width: CGRectGetMaxX(lastLable!.frame), height: 0)
+            contentSize = CGSize(width: lastLable!.frame.maxX, height: 0)
         }
     }
     /// 标题lable的背景色(默认是白色)
@@ -52,7 +52,7 @@ class ZPTitleScrollView: UIScrollView {
         didSet {
             for i in 0..<subviews.count {
                 let lable = subviews[i] as! ZP_TitleLable
-                lable.font = UIFont.systemFontOfSize(ZP_LableFont)
+                lable.font = UIFont.systemFont(ofSize: ZP_LableFont)
             }
         }
     }
@@ -92,7 +92,7 @@ class ZPTitleScrollView: UIScrollView {
         self.frame = CGRect(x: 0, y: 0, width: self.ZPScreenWidth, height: 44)
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
-        backgroundColor = UIColor.lightGrayColor()
+        backgroundColor = UIColor.lightGray
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -108,7 +108,7 @@ class ZPTitleScrollView: UIScrollView {
             let lable = ZP_TitleLable()
             lable.frame = CGRect(x: CGFloat(i) * lableW, y: 0, width: lableW, height: frame.size.height)
             lable.backgroundColor = ZP_TitleLableBGColor
-            lable.font = UIFont.systemFontOfSize(ZP_LableFont)
+            lable.font = UIFont.systemFont(ofSize: ZP_LableFont)
             lable.textColor = UIColor(red: lableSmallRGB.R, green: lableSmallRGB.G, blue: lableSmallRGB.B, alpha: 1.0)
             lable.tag = TagStart + i
             lable.text = titles![i]
@@ -117,16 +117,16 @@ class ZPTitleScrollView: UIScrollView {
             if i == 0 {
                 lable.scale = 1
             }
-            lable.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "lableClick:"))
+            lable.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lableClick(tap:))))
             addSubview(lable)
         }
         let lastLable = viewWithTag(100 + subviews.count - 1)
-        contentSize = CGSize(width: CGRectGetMaxX(lastLable!.frame), height: 0)
+        contentSize = CGSize(width: lastLable!.frame.maxX, height: 0)
     }
     
-    func lableClick(tap: UITapGestureRecognizer) {
+    @objc private func lableClick(tap: UITapGestureRecognizer) {
         if titleCilckIndex != nil {
-            titleCilckIndex!(index: tap.view!.tag - TagStart)
+            titleCilckIndex!(tap.view!.tag - TagStart)
         }
     }
     

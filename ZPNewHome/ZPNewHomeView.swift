@@ -15,7 +15,7 @@ class ZPNewHomeView: UIView {
     var ZP_ContentVCS: [UIViewController]? {
         didSet {
             
-            contentScrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.size.width * CGFloat(ZP_ContentVCS!.count), height: 0)
+            contentScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * CGFloat(ZP_ContentVCS!.count), height: 0)
             scrollViewDidEndScrollingAnimation(contentScrollView)
         }
     }
@@ -76,9 +76,9 @@ class ZPNewHomeView: UIView {
         }
     }
     //MARK: - 内部私有的
-    private let ZPScreenWidth = UIScreen.mainScreen().bounds.width
-    private let ZPScreenHeight = UIScreen.mainScreen().bounds.height
-    private let scrollW = UIScreen.mainScreen().bounds.size.width
+    private let ZPScreenWidth = UIScreen.main.bounds.width
+    private let ZPScreenHeight = UIScreen.main.bounds.height
+    private let scrollW = UIScreen.main.bounds.width
     private let tagStart = 100
     
     override init(frame: CGRect) {
@@ -101,23 +101,23 @@ class ZPNewHomeView: UIView {
         let scrollView = ZPTitleScrollView()
         weak var weakSelf = self
         scrollView.titleCilckIndex = { (index) -> Void in
-            let offsetX = UIScreen.mainScreen().bounds.size.width * CGFloat(index)
+            let offsetX = UIScreen.main.bounds.width * CGFloat(index)
             weakSelf!.contentScrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
         }
         return scrollView
     }()
     private lazy var contentScrollView: ZPContentScrollView = {
         let scrollView = ZPContentScrollView()
-        scrollView.frame = CGRect(x: 0, y: CGRectGetMaxY(self.titleScrollView.frame), width: self.ZPScreenWidth, height: self.ZPScreenHeight - CGRectGetMaxY(self.titleScrollView.frame))
+        scrollView.frame = CGRect(x: 0, y: self.titleScrollView.frame.maxY, width: self.ZPScreenWidth, height: self.ZPScreenHeight - self.titleScrollView.frame.maxY)
         scrollView.delegate = self
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         return scrollView
     }()
 }
 
 extension ZPNewHomeView: UIScrollViewDelegate {
     
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         var offset = scrollView.contentOffset
         let scrollH = scrollView.frame.size.height
         let index: Int = Int(offset.x / scrollW)
@@ -143,11 +143,11 @@ extension ZPNewHomeView: UIScrollViewDelegate {
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollViewDidEndScrollingAnimation(scrollView)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let index = Int(scrollView.contentOffset.x / scrollW)
         let scale = scrollView.contentOffset.x / scrollW - CGFloat(index)
         if scrollView.contentOffset.x < 0 || scrollView.contentOffset.x > scrollView.contentSize.width - scrollView.frame.size.width {
